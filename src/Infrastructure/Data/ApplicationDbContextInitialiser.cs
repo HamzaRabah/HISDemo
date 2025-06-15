@@ -19,6 +19,12 @@ public static class InitialiserExtensions
 
             await initialiser.SeedAsync();
         });
+        builder.UseSeeding((context, _) =>
+        {
+            var initialiser = serviceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+            // Block on async call for sync context
+            initialiser.SeedAsync().GetAwaiter().GetResult();
+        });
     }
 
     public static async Task InitialiseDatabaseAsync(this WebApplication app)
