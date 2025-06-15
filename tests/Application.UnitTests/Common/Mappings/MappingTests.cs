@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using AutoMapper;
 using HISDemo.Application.Common.Interfaces;
 using HISDemo.Application.Common.Models;
-using HISDemo.Application.TodoItems.Queries.GetTodoItemsWithPagination;
-using HISDemo.Application.TodoLists.Queries.GetTodos;
+using HISDemo.Application.Patients.Queries.GetPatientsWithPagination;
 using HISDemo.Domain.Entities;
 using NUnit.Framework;
 
@@ -30,11 +28,7 @@ public class MappingTests
     }
 
     [Test]
-    [TestCase(typeof(TodoList), typeof(TodoListDto))]
-    [TestCase(typeof(TodoItem), typeof(TodoItemDto))]
-    [TestCase(typeof(TodoList), typeof(LookupDto))]
-    [TestCase(typeof(TodoItem), typeof(LookupDto))]
-    [TestCase(typeof(TodoItem), typeof(TodoItemBriefDto))]
+    [TestCase(typeof(Patient), typeof(PatientDto))]
     public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
         var instance = GetInstanceOf(source);
@@ -47,7 +41,48 @@ public class MappingTests
         if (type.GetConstructor(Type.EmptyTypes) != null)
             return Activator.CreateInstance(type)!;
 
-        // Type without parameterless constructor
-        return RuntimeHelpers.GetUninitializedObject(type);
+        // Handle Patient entity with required properties
+        if (type == typeof(Patient))
+        {
+            return new Patient
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Patient",
+                FileNo = 12345,
+                CitizenId = "123456789",
+                Birthdate = DateTime.UtcNow.AddYears(-30),
+                Gender = 0,
+                Nationality = "Test",
+                PhoneNumber = "123-456-7890",
+                Email = "test@example.com",
+                Country = "Test Country",
+                City = "Test City",
+                Street = "Test Street",
+                Address1 = "Test Address 1",
+                Address2 = "Test Address 2",
+                ContactPerson = "Test Contact",
+                ContactRelation = "Test Relation",
+                ContactPhone = "123-456-7890",
+                FirstVisitDate = DateTime.UtcNow,
+                RecordCreationDate = DateTime.UtcNow
+            };
+        }
+
+        // Handle LookupDto and other simple types
+        if (type == typeof(LookupDto))
+        {
+            return new LookupDto { Id = 1, Title = "Test" };
+        }
+
+        // For other types, try to create with Activator.CreateInstance
+        try
+        {
+            return Activator.CreateInstance(type, true)!;
+        }
+        catch
+        {
+            // If all else fails, throw a helpful exception
+            throw new InvalidOperationException($"Unable to create instance of type {type.Name}. Consider adding explicit handling for this type in GetInstanceOf method.");
+        }
     }
 }
