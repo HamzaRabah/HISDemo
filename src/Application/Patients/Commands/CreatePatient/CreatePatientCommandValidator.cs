@@ -1,15 +1,23 @@
+using HISDemo.Application.Common.Interfaces;
+
 namespace HISDemo.Application.Patients.Commands.CreatePatient;
 
 public class CreatePatientCommandValidator : AbstractValidator<CreatePatientCommand>
 {
-    public CreatePatientCommandValidator()
+    private readonly IApplicationDbContext _context;
+
+    public CreatePatientCommandValidator(IApplicationDbContext context)
     {
+        _context = context;
+        
         RuleFor(v => v.Name)
             .NotEmpty().WithMessage("Name is required.")
             .MaximumLength(200).WithMessage("Name must not exceed 200 characters.");
 
         RuleFor(v => v.FileNo)
-            .GreaterThan(0).WithMessage("FileNo must be greater than 0.");
+            .GreaterThan(0).WithMessage("FileNo must be greater than 0.")
+            .MustAsync(BeUniqueFileNo)
+            .WithMessage("'{PropertyName}' must be unique.");
 
         RuleFor(v => v.CitizenId)
             .NotEmpty().WithMessage("CitizenId is required.")
@@ -38,5 +46,11 @@ public class CreatePatientCommandValidator : AbstractValidator<CreatePatientComm
 
         RuleFor(v => v.FirstVisitDate)
             .NotEmpty().WithMessage("FirstVisitDate is required.");
+    }
+    
+    public async Task<bool> BeUniqueFileNo(int fileNo, CancellationToken cancellationToken)
+    {
+        return await _context.Patients
+            .AllAsync(l => l.FileNo != fileNo, cancellationToken);
     }
 }
