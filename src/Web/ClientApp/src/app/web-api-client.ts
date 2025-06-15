@@ -18,7 +18,9 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 export interface IPatientsClient {
     createPatient(command: CreatePatientCommand): Observable<string>;
     getPatients(name: string | null | undefined, fileNo: number | null | undefined, phoneNumber: string | null | undefined, pageNumber: number, pageSize: number): Observable<PaginatedListOfPatientDto>;
+    updatePatient(id: string, command: UpdatePatientCommand): Observable<void>;
     deletePatient(id: string): Observable<void>;
+    getPatient(id: string): Observable<PatientDto>;
 }
 
 @Injectable({
@@ -149,6 +151,57 @@ export class PatientsClient implements IPatientsClient {
         return _observableOf(null as any);
     }
 
+    updatePatient(id: string, command: UpdatePatientCommand): Observable<void> {
+        let url_ = this.baseUrl + "/api/Patients/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdatePatient(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdatePatient(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdatePatient(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
     deletePatient(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/Patients/{id}";
         if (id === undefined || id === null)
@@ -187,6 +240,57 @@ export class PatientsClient implements IPatientsClient {
         if (status === 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getPatient(id: string): Observable<PatientDto> {
+        let url_ = this.baseUrl + "/api/Patients/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPatient(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPatient(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PatientDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PatientDto>;
+        }));
+    }
+
+    protected processGetPatient(response: HttpResponseBase): Observable<PatientDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PatientDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -886,15 +990,27 @@ export interface ICreatePatientCommand {
     firstVisitDate?: Date;
 }
 
-export class PaginatedListOfPatientDto implements IPaginatedListOfPatientDto {
-    items?: PatientDto[];
-    pageNumber?: number;
-    totalPages?: number;
-    totalCount?: number;
-    hasPreviousPage?: boolean;
-    hasNextPage?: boolean;
+export class UpdatePatientCommand implements IUpdatePatientCommand {
+    id?: string;
+    name?: string;
+    fileNo?: number;
+    citizenId?: string;
+    birthdate?: Date;
+    gender?: number;
+    nationality?: string;
+    phoneNumber?: string;
+    email?: string;
+    country?: string;
+    city?: string;
+    street?: string;
+    address1?: string;
+    address2?: string;
+    contactPerson?: string;
+    contactRelation?: string;
+    contactPhone?: string;
+    firstVisitDate?: Date;
 
-    constructor(data?: IPaginatedListOfPatientDto) {
+    constructor(data?: IUpdatePatientCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -905,49 +1021,77 @@ export class PaginatedListOfPatientDto implements IPaginatedListOfPatientDto {
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(PatientDto.fromJS(item));
-            }
-            this.pageNumber = _data["pageNumber"];
-            this.totalPages = _data["totalPages"];
-            this.totalCount = _data["totalCount"];
-            this.hasPreviousPage = _data["hasPreviousPage"];
-            this.hasNextPage = _data["hasNextPage"];
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.fileNo = _data["fileNo"];
+            this.citizenId = _data["citizenId"];
+            this.birthdate = _data["birthdate"] ? new Date(_data["birthdate"].toString()) : <any>undefined;
+            this.gender = _data["gender"];
+            this.nationality = _data["nationality"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.email = _data["email"];
+            this.country = _data["country"];
+            this.city = _data["city"];
+            this.street = _data["street"];
+            this.address1 = _data["address1"];
+            this.address2 = _data["address2"];
+            this.contactPerson = _data["contactPerson"];
+            this.contactRelation = _data["contactRelation"];
+            this.contactPhone = _data["contactPhone"];
+            this.firstVisitDate = _data["firstVisitDate"] ? new Date(_data["firstVisitDate"].toString()) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): PaginatedListOfPatientDto {
+    static fromJS(data: any): UpdatePatientCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new PaginatedListOfPatientDto();
+        let result = new UpdatePatientCommand();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        data["pageNumber"] = this.pageNumber;
-        data["totalPages"] = this.totalPages;
-        data["totalCount"] = this.totalCount;
-        data["hasPreviousPage"] = this.hasPreviousPage;
-        data["hasNextPage"] = this.hasNextPage;
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["fileNo"] = this.fileNo;
+        data["citizenId"] = this.citizenId;
+        data["birthdate"] = this.birthdate ? this.birthdate.toISOString() : <any>undefined;
+        data["gender"] = this.gender;
+        data["nationality"] = this.nationality;
+        data["phoneNumber"] = this.phoneNumber;
+        data["email"] = this.email;
+        data["country"] = this.country;
+        data["city"] = this.city;
+        data["street"] = this.street;
+        data["address1"] = this.address1;
+        data["address2"] = this.address2;
+        data["contactPerson"] = this.contactPerson;
+        data["contactRelation"] = this.contactRelation;
+        data["contactPhone"] = this.contactPhone;
+        data["firstVisitDate"] = this.firstVisitDate ? this.firstVisitDate.toISOString() : <any>undefined;
         return data;
     }
 }
 
-export interface IPaginatedListOfPatientDto {
-    items?: PatientDto[];
-    pageNumber?: number;
-    totalPages?: number;
-    totalCount?: number;
-    hasPreviousPage?: boolean;
-    hasNextPage?: boolean;
+export interface IUpdatePatientCommand {
+    id?: string;
+    name?: string;
+    fileNo?: number;
+    citizenId?: string;
+    birthdate?: Date;
+    gender?: number;
+    nationality?: string;
+    phoneNumber?: string;
+    email?: string;
+    country?: string;
+    city?: string;
+    street?: string;
+    address1?: string;
+    address2?: string;
+    contactPerson?: string;
+    contactRelation?: string;
+    contactPhone?: string;
+    firstVisitDate?: Date;
 }
 
 export class PatientDto implements IPatientDto {
@@ -1056,6 +1200,70 @@ export interface IPatientDto {
     contactPhone?: string;
     firstVisitDate?: Date;
     recordCreationDate?: Date;
+}
+
+export class PaginatedListOfPatientDto implements IPaginatedListOfPatientDto {
+    items?: PatientDto[];
+    pageNumber?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+
+    constructor(data?: IPaginatedListOfPatientDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(PatientDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
+    }
+
+    static fromJS(data: any): PaginatedListOfPatientDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfPatientDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
+}
+
+export interface IPaginatedListOfPatientDto {
+    items?: PatientDto[];
+    pageNumber?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class PaginatedListOfTodoItemBriefDto implements IPaginatedListOfTodoItemBriefDto {

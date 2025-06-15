@@ -108,6 +108,41 @@
       }
     },
     "/api/Patients/{id}": {
+      "put": {
+        "tags": [
+          "Patients"
+        ],
+        "operationId": "UpdatePatient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePatientCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Patients"
@@ -128,6 +163,36 @@
         "responses": {
           "204": {
             "description": ""
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "operationId": "GetPatient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientDto"
+                }
+              }
+            }
           }
         }
       }
@@ -519,33 +584,68 @@
           }
         }
       },
-      "PaginatedListOfPatientDto": {
+      "UpdatePatientCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PatientDto"
-            }
+          "id": {
+            "type": "string",
+            "format": "guid"
           },
-          "pageNumber": {
+          "name": {
+            "type": "string"
+          },
+          "fileNo": {
             "type": "integer",
             "format": "int32"
           },
-          "totalPages": {
+          "citizenId": {
+            "type": "string"
+          },
+          "birthdate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "gender": {
             "type": "integer",
             "format": "int32"
           },
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
+          "nationality": {
+            "type": "string"
           },
-          "hasPreviousPage": {
-            "type": "boolean"
+          "phoneNumber": {
+            "type": "string"
           },
-          "hasNextPage": {
-            "type": "boolean"
+          "email": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "address1": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "contactPerson": {
+            "type": "string"
+          },
+          "contactRelation": {
+            "type": "string"
+          },
+          "contactPhone": {
+            "type": "string"
+          },
+          "firstVisitDate": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -615,6 +715,36 @@
           "recordCreationDate": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "PaginatedListOfPatientDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
           }
         }
       },
