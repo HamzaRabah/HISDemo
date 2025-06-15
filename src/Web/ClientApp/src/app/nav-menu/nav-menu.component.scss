@@ -2,6 +2,21 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  font-weight: 600;
+
+  .text-primary {
+    color: #2c5aa0 !important;
+  }
+
+  strong {
+    color: #2c5aa0;
+    font-size: 1.2rem;
+  }
+
+  .text-muted {
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
 }
 
 html {
@@ -16,4 +31,56 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+// Navigation enhancements
+.navbar {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+  border-bottom: 2px solid #e9ecef;
+
+  .nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 0.375rem;
+    margin: 0 0.25rem;
+    padding: 0.5rem 1rem !important;
+
+    &:hover {
+      background-color: rgba(44, 90, 160, 0.1);
+      color: #2c5aa0 !important;
+      transform: translateY(-1px);
+    }
+
+    i {
+      font-size: 0.9rem;
+    }
+  }
+
+  .nav-item.link-active .nav-link {
+    background-color: #2c5aa0;
+    color: white !important;
+
+    &:hover {
+      background-color: #1e3f73;
+      color: white !important;
+    }
+  }
+}
+
+// Mobile responsive improvements
+@media (max-width: 576px) {
+  .navbar-brand {
+    .text-muted {
+      display: none;
+    }
+  }
+
+  .navbar-nav {
+    padding-top: 1rem;
+
+    .nav-link {
+      padding: 0.75rem 1rem !important;
+      margin: 0.25rem 0;
+    }
+  }
 }

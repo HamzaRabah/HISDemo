@@ -1,12 +1,16 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">HISDemo.Web</a>
+      <a class="navbar-brand d-flex align-items-center" [routerLink]="['/']">
+        <i class="bi bi-hospital me-2 text-primary"></i>
+        <strong>HISDemo</strong>
+        <span class="text-muted ms-2 small">Hospital Information System</span>
+      </a>
       <button
         class="navbar-toggler"
         type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
+        data-bs-toggle="collapse"
+        data-bs-target=".navbar-collapse"
         aria-label="Toggle navigation"
         [attr.aria-expanded]="isExpanded"
         (click)="toggle()"
@@ -19,16 +23,28 @@
           <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+            <a class="nav-link text-dark d-flex align-items-center" [routerLink]="['/']">
+              <i class="bi bi-house me-1"></i>
+              Home
+            </a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/patients']">Patients</a>
+            <a class="nav-link text-dark d-flex align-items-center" [routerLink]="['/patients']">
+              <i class="bi bi-people me-1"></i>
+              Patients
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" href="/api" target="_blank">API</a>
+            <a class="nav-link text-dark d-flex align-items-center" href="/api" target="_blank">
+              <i class="bi bi-code-slash me-1"></i>
+              API Docs
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" href="/Identity/Account/Manage">Account</a>
+            <a class="nav-link text-dark d-flex align-items-center" href="/Identity/Account/Manage">
+              <i class="bi bi-person-circle me-1"></i>
+              Account
+            </a>
           </li>
         </ul>
       </div>

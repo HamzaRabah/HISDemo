@@ -1,13 +1,165 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section bg-gradient-primary text-white py-5 mb-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8" style="z-index: 99999">
+          <h1 class="display-4 fw-bold mb-3">
+            <i class="bi bi-hospital me-3"></i>
+            Hospital Information System
+          </h1>
+          <p class="lead mb-4">
+            A comprehensive patient management system built with modern technologies.
+            Streamline patient data management, search capabilities, and administrative workflows.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a [routerLink]="['/patients']" class="btn btn-light btn-lg">
+              <i class="bi bi-people me-2"></i>
+              Manage Patients
+            </a>
+            <a href="/api" target="_blank" class="btn btn-outline-light btn-lg">
+              <i class="bi bi-code-slash me-2"></i>
+              View API Documentation
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 text-center">
+          <div class="hero-icon">
+            <i class="bi bi-clipboard2-data display-1 text-white-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section py-5">
+    <div class="container">
+      <div class="row text-center mb-5">
+        <div class="col-12">
+          <h2 class="display-6 fw-bold mb-3">System Features</h2>
+          <p class="text-muted">Built with Clean Architecture principles and modern web technologies</p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card card h-100 border-0 shadow-sm">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon mb-3">
+                <i class="bi bi-person-plus-fill text-primary display-4"></i>
+              </div>
+              <h5 class="card-title fw-bold">Patient Management</h5>
+              <p class="card-text text-muted">
+                Add, update, and manage comprehensive patient records with detailed personal and medical information.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="feature-card card h-100 border-0 shadow-sm">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon mb-3">
+                <i class="bi bi-search text-success display-4"></i>
+              </div>
+              <h5 class="card-title fw-bold">Advanced Search</h5>
+              <p class="card-text text-muted">
+                Powerful search capabilities by name, file number, or phone number with pagination support.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="feature-card card h-100 border-0 shadow-sm">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon mb-3">
+                <i class="bi bi-shield-check text-warning display-4"></i>
+              </div>
+              <h5 class="card-title fw-bold">Secure & Reliable</h5>
+              <p class="card-text text-muted">
+                Built with security best practices, data validation, and error handling for reliable operations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Stack Section -->
+  <section class="tech-section bg-light py-5">
+    <div class="container">
+      <div class="row text-center mb-4">
+        <div class="col-12">
+          <h3 class="fw-bold mb-3">Technology Stack</h3>
+          <p class="text-muted">Modern, scalable technologies powering the system</p>
+        </div>
+      </div>
+
+      <div class="row g-3 justify-content-center">
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+          <div class="tech-badge card text-center p-3 border-0 shadow-sm">
+            <i class="bi bi-code-square text-primary mb-2"></i>
+            <small class="fw-semibold">.NET 9</small>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+          <div class="tech-badge card text-center p-3 border-0 shadow-sm">
+            <i class="bi bi-bootstrap text-danger mb-2"></i>
+            <small class="fw-semibold">Angular 18</small>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+          <div class="tech-badge card text-center p-3 border-0 shadow-sm">
+            <i class="bi bi-database text-info mb-2"></i>
+            <small class="fw-semibold">PostgreSQL</small>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+          <div class="tech-badge card text-center p-3 border-0 shadow-sm">
+            <i class="bi bi-gear text-success mb-2"></i>
+            <small class="fw-semibold">Clean Architecture</small>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+          <div class="tech-badge card text-center p-3 border-0 shadow-sm">
+            <i class="bi bi-lightning text-warning mb-2"></i>
+            <small class="fw-semibold">MediatR</small>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+          <div class="tech-badge card text-center p-3 border-0 shadow-sm">
+            <i class="bi bi-cloud text-primary mb-2"></i>
+            <small class="fw-semibold">Entity Framework</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Actions Section -->
+  <section class="actions-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h3 class="fw-bold mb-4">Get Started</h3>
+          <p class="text-muted mb-4">
+            Ready to explore the system? Start managing patient records or explore the API documentation.
+          </p>
+          <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a [routerLink]="['/patients']" class="btn btn-primary btn-lg">
+              <i class="bi bi-arrow-right-circle me-2"></i>
+              Go to Patients
+            </a>
+            <a href="/api" target="_blank" class="btn btn-outline-primary btn-lg">
+              <i class="bi bi-book me-2"></i>
+              API Documentation
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
