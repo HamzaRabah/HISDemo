@@ -1,0 +1,315 @@
+<form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="patient-form">
+  <!-- Error Alert -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    {{ error }}
+  </div>
+
+  <!-- Personal Information Section -->
+  <div class="form-section">
+    <h5 class="section-title">
+      <i class="bi bi-person-fill"></i>
+      Personal Information
+    </h5>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="name" class="form-label required">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('name')"
+          formControlName="name"
+          placeholder="Enter patient's full name">
+        <div *ngIf="hasFieldError('name')" class="invalid-feedback">
+          {{ getFieldError('name') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="fileNo" class="form-label required">File Number</label>
+        <input
+          type="number"
+          id="fileNo"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('fileNo')"
+          formControlName="fileNo"
+          placeholder="Enter unique file number">
+        <div *ngIf="hasFieldError('fileNo')" class="invalid-feedback">
+          {{ getFieldError('fileNo') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="citizenId" class="form-label required">Citizen ID</label>
+        <input
+          type="text"
+          id="citizenId"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('citizenId')"
+          formControlName="citizenId"
+          placeholder="Enter citizen ID number">
+        <div *ngIf="hasFieldError('citizenId')" class="invalid-feedback">
+          {{ getFieldError('citizenId') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="nationality" class="form-label required">Nationality</label>
+        <input
+          type="text"
+          id="nationality"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('nationality')"
+          formControlName="nationality"
+          placeholder="Enter nationality">
+        <div *ngIf="hasFieldError('nationality')" class="invalid-feedback">
+          {{ getFieldError('nationality') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="birthdate" class="form-label required">Birth Date</label>
+        <input
+          type="date"
+          id="birthdate"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('birthdate')"
+          formControlName="birthdate">
+        <div *ngIf="hasFieldError('birthdate')" class="invalid-feedback">
+          {{ getFieldError('birthdate') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="gender" class="form-label required">Gender</label>
+        <select
+          id="gender"
+          class="form-select"
+          [class.is-invalid]="hasFieldError('gender')"
+          formControlName="gender">
+          <option value="">Select gender</option>
+          <option value="0">Male</option>
+          <option value="1">Female</option>
+        </select>
+        <div *ngIf="hasFieldError('gender')" class="invalid-feedback">
+          {{ getFieldError('gender') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="firstVisitDate" class="form-label required">First Visit Date</label>
+        <input
+          type="date"
+          id="firstVisitDate"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('firstVisitDate')"
+          formControlName="firstVisitDate">
+        <div *ngIf="hasFieldError('firstVisitDate')" class="invalid-feedback">
+          {{ getFieldError('firstVisitDate') }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Information Section -->
+  <div class="form-section">
+    <h5 class="section-title">
+      <i class="bi bi-telephone-fill"></i>
+      Contact Information
+    </h5>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('phoneNumber')"
+          formControlName="phoneNumber"
+          placeholder="Enter phone number">
+        <div *ngIf="hasFieldError('phoneNumber')" class="invalid-feedback">
+          {{ getFieldError('phoneNumber') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('email')"
+          formControlName="email"
+          placeholder="Enter email address">
+        <div *ngIf="hasFieldError('email')" class="invalid-feedback">
+          {{ getFieldError('email') }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Address Information Section -->
+  <div class="form-section">
+    <h5 class="section-title">
+      <i class="bi bi-geo-alt-fill"></i>
+      Address Information
+    </h5>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label for="country" class="form-label">Country</label>
+        <input
+          type="text"
+          id="country"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('country')"
+          formControlName="country"
+          placeholder="Enter country">
+        <div *ngIf="hasFieldError('country')" class="invalid-feedback">
+          {{ getFieldError('country') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="city" class="form-label">City</label>
+        <input
+          type="text"
+          id="city"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('city')"
+          formControlName="city"
+          placeholder="Enter city">
+        <div *ngIf="hasFieldError('city')" class="invalid-feedback">
+          {{ getFieldError('city') }}
+        </div>
+      </div>
+
+      <div class="col-12">
+        <label for="street" class="form-label">Street</label>
+        <input
+          type="text"
+          id="street"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('street')"
+          formControlName="street"
+          placeholder="Enter street address">
+        <div *ngIf="hasFieldError('street')" class="invalid-feedback">
+          {{ getFieldError('street') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="address1" class="form-label">Address Line 1</label>
+        <input
+          type="text"
+          id="address1"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('address1')"
+          formControlName="address1"
+          placeholder="Enter address line 1">
+        <div *ngIf="hasFieldError('address1')" class="invalid-feedback">
+          {{ getFieldError('address1') }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="address2" class="form-label">Address Line 2</label>
+        <input
+          type="text"
+          id="address2"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('address2')"
+          formControlName="address2"
+          placeholder="Enter address line 2">
+        <div *ngIf="hasFieldError('address2')" class="invalid-feedback">
+          {{ getFieldError('address2') }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emergency Contact Section -->
+  <div class="form-section">
+    <h5 class="section-title">
+      <i class="bi bi-person-lines-fill"></i>
+      Emergency Contact
+    </h5>
+
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label for="contactPerson" class="form-label">Contact Person</label>
+        <input
+          type="text"
+          id="contactPerson"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('contactPerson')"
+          formControlName="contactPerson"
+          placeholder="Enter contact person name">
+        <div *ngIf="hasFieldError('contactPerson')" class="invalid-feedback">
+          {{ getFieldError('contactPerson') }}
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label for="contactRelation" class="form-label">Relation</label>
+        <input
+          type="text"
+          id="contactRelation"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('contactRelation')"
+          formControlName="contactRelation"
+          placeholder="e.g. Spouse, Parent, Sibling">
+        <div *ngIf="hasFieldError('contactRelation')" class="invalid-feedback">
+          {{ getFieldError('contactRelation') }}
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label for="contactPhone" class="form-label">Contact Phone</label>
+        <input
+          type="tel"
+          id="contactPhone"
+          class="form-control"
+          [class.is-invalid]="hasFieldError('contactPhone')"
+          formControlName="contactPhone"
+          placeholder="Enter contact phone number">
+        <div *ngIf="hasFieldError('contactPhone')" class="invalid-feedback">
+          {{ getFieldError('contactPhone') }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="form-actions">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onCancel()"
+      [disabled]="isSubmitting">
+      <i class="bi bi-x-circle"></i>
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="resetForm()"
+      [disabled]="isSubmitting">
+      <i class="bi bi-arrow-clockwise"></i>
+      Reset
+    </button>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="isSubmitting || patientForm.invalid">
+      <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+      <i *ngIf="!isSubmitting" class="bi bi-check-circle"></i>
+      {{ isSubmitting ? 'Creating...' : 'Create Patient' }}
+    </button>
+  </div>
+</form>

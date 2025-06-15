@@ -1,0 +1,127 @@
+<!-- Loading Spinner -->
+<div *ngIf="isLoading" class="text-center py-4">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <p class="mt-2 text-muted">Loading patients...</p>
+</div>
+
+<!-- Patient Table -->
+<div *ngIf="!isLoading" class="table-responsive">
+  <table class="table table-hover table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">File No.</th>
+      <th scope="col">Name</th>
+      <th scope="col">Citizen ID</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Birthdate</th>
+      <th scope="col">First Visit</th>
+      <th scope="col" class="text-center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- No Data Row -->
+    <tr *ngIf="patientsData.items.length === 0">
+      <td colspan="9" class="text-center py-4 text-muted">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        No patients found matching your criteria.
+      </td>
+    </tr>
+
+    <!-- Patient Rows -->
+    <tr *ngFor="let patient of patientsData.items; trackBy: trackByPatientId">
+      <td>
+        <span class="badge bg-secondary">{{ patient.fileNo }}</span>
+      </td>
+      <td>
+        <strong>{{ patient.name }}</strong>
+      </td>
+      <td>{{ patient.citizenId }}</td>
+      <td>{{ patient.phoneNumber || '-' }}</td>
+      <td>{{ patient.email || '-' }}</td>
+      <td>
+          <span class="badge"
+                [class.bg-primary]="patient.gender === 0"
+                [class.bg-info]="patient.gender === 1">
+            {{ getGenderText(patient.gender) }}
+          </span>
+      </td>
+      <td>{{ formatDate(patient.birthdate) }}</td>
+      <td>{{ formatDate(patient.firstVisitDate) }}</td>
+      <td class="text-center">
+        <div class="btn-group btn-group-sm" role="group">
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            (click)="onEditPatient(patient)"
+            title="Edit Patient">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            (click)="onDeletePatient(patient)"
+            title="Delete Patient">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<div *ngIf="!isLoading && patientsData.totalPages > 1" class="d-flex justify-content-between align-items-center mt-4">
+  <div class="text-muted">
+    {{ getShowingText() }}
+  </div>
+
+  <nav aria-label="Patient list pagination">
+    <ul class="pagination pagination-sm mb-0">
+      <!-- Previous Button -->
+      <li class="page-item" [class.disabled]="patientsData.currentPage === 1">
+        <button
+          class="page-link"
+          (click)="onPageChange(patientsData.currentPage - 1)"
+          [disabled]="patientsData.currentPage === 1">
+          <i class="bi bi-chevron-left"></i>
+          Previous
+        </button>
+      </li>
+
+      <!-- Page Numbers -->
+      <li *ngFor="let page of getPageNumbers()"
+          class="page-item"
+          [class.active]="page === patientsData.currentPage"
+          [class.disabled]="page === -1">
+        <button
+          *ngIf="page !== -1"
+          class="page-link"
+          (click)="onPageChange(page)">
+          {{ page }}
+        </button>
+        <span *ngIf="page === -1" class="page-link">...</span>
+      </li>
+
+      <!-- Next Button -->
+      <li class="page-item" [class.disabled]="patientsData.currentPage === patientsData.totalPages">
+        <button
+          class="page-link"
+          (click)="onPageChange(patientsData.currentPage + 1)"
+          [disabled]="patientsData.currentPage === patientsData.totalPages">
+          Next
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Pagination Info for small screens -->
+<div *ngIf="!isLoading && patientsData.totalCount > 0" class="d-block d-md-none mt-3 text-center text-muted">
+  {{ getShowingText() }}
+</div>

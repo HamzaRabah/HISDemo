@@ -1,0 +1,93 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Patient Management</h1>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="openAddPatientModal()">
+          <i class="bi bi-person-plus"></i> Add New Patient
+        </button>
+      </div>
+
+      <!-- Error Alert -->
+      <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ error }}
+        <button type="button" class="btn-close" (click)="error = null"></button>
+      </div>
+
+      <!-- Search Filters Component -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <app-patient-search-filters
+            (filtersChange)="onFiltersChange($event)">
+          </app-patient-search-filters>
+        </div>
+      </div>
+
+      <!-- Patient List Component -->
+      <div class="card">
+        <div class="card-body">
+          <app-patient-list
+            [patientsData]="patientsData"
+            [isLoading]="isLoading"
+            [currentPage]="currentFilters.pageNumber"
+            [pageSize]="currentFilters.pageSize"
+            (pageChange)="onPageChange($event)"
+            (editPatient)="openUpdatePatientModal($event)"
+            (deletePatient)="openDeleteConfirmModal($event)">
+          </app-patient-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Patient Modal -->
+<ng-template #addPatientModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Add New Patient</h4>
+    <button type="button" class="btn-close" (click)="onModalCancelled()"></button>
+  </div>
+  <div class="modal-body">
+    <app-patient-add
+      (patientCreated)="onPatientCreated()"
+      (cancelled)="onModalCancelled()">
+    </app-patient-add>
+  </div>
+</ng-template>
+
+<!-- Update Patient Modal -->
+<ng-template #updatePatientModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Update Patient</h4>
+    <button type="button" class="btn-close" (click)="onModalCancelled()"></button>
+  </div>
+  <div class="modal-body">
+    <app-patient-update
+      [patient]="selectedPatient"
+      (patientUpdated)="onPatientUpdated()"
+      (cancelled)="onModalCancelled()">
+    </app-patient-update>
+  </div>
+</ng-template>
+
+<!-- Delete Confirmation Modal -->
+<ng-template #deleteConfirmModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm Delete</h4>
+    <button type="button" class="btn-close" (click)="cancelDelete()"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete patient <strong>{{ patientToDelete?.name }}</strong>?</p>
+    <p class="text-muted">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelDelete()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+      Delete Patient
+    </button>
+  </div>
+</ng-template>

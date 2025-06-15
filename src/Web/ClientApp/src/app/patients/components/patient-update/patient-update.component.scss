@@ -1,0 +1,22 @@
+// Import shared styles from add component
+@import '../patient-add/patient-add.component.scss';
+
+// Additional styles specific to update component
+.alert-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border-left: 4px solid #17a2b8;
+}
+
+.form-text.text-warning {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #856404 !important;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+
+  i {
+    font-size: 0.75rem;
+  }
+}
